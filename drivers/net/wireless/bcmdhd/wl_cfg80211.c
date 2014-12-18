@@ -1135,11 +1135,6 @@ wl_cfg80211_add_virtual_iface(struct wiphy *wiphy,
 	/* Use primary I/F for sending cmds down to firmware */
 	_ndev = wl_to_prmry_ndev(wl);
 
-	if (wl_get_drv_status(wl, CONNECTING, _ndev)) {
-		WL_ERR(("Already AP connection going on\n"));
-		return ERR_PTR(-EBUSY);
-	}
-
 	WL_DBG(("if name: %s, type: %d\n", name, type));
 	switch (type) {
 	case NL80211_IFTYPE_ADHOC:
@@ -7410,7 +7405,7 @@ wl_notify_connect_status(struct wl_priv *wl, bcm_struct_cfgdev *cfgdev,
 			if (wl_get_drv_status(wl, CONNECTING, ndev))
 				wl_bss_connect_done(wl, ndev, e, data, false);
 		} else {
-			WL_DBG(("%s nothing\n", __FUNCTION__));
+			printk("%s nothing\n", __FUNCTION__);
 		}
 	} else {
 		WL_ERR(("Invalid ndev status %d\n", wl_get_mode_by_netdev(wl, ndev)));

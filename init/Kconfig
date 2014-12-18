@@ -939,34 +939,13 @@ source "usr/Kconfig"
 
 endif
 
-choice
-  prompt "Optimization level"
-  default CC_OPTIMIZE_DEFAULT
-
 config CC_OPTIMIZE_FOR_SIZE
-	bool "Use -Os"
-
-config CC_OPTIMIZE_DEFAULT
-	bool "Use -O2"
-
-config CC_OPTIMIZE_ALOT
-	bool "Use -O3"
-
-endchoice
-
-config CC_GRAPHITE_OPTIMIZATION
-	bool "Enable graphite optimizations"
+	bool "Optimize for size"
 	help
-	  Enabling this option will turn on graphite optimizations.
+	  Enabling this option will pass "-Os" instead of "-O2" to gcc
+	  resulting in a smaller kernel.
 
-	  If unsure, say N.
-
-config CC_LINK_TIME_OPTIMIZATION
-	bool "Enable link-time optimization"
-	help
-	  Enabling this option will turn on link time optimization.
-
-	  If unsure, say N.
+	  If unsure, say Y.
 
 config SYSCTL
 	bool

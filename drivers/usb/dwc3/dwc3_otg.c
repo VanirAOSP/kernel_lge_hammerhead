@@ -18,7 +18,6 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 #include <linux/slimport.h>
-#include <linux/fastchg.h>
 
 #include "core.h"
 #include "dwc3_otg.h"
@@ -520,7 +519,7 @@ static int dwc3_otg_set_power(struct usb_phy *phy, unsigned mA)
 
 	ac_psy = power_supply_get_by_name("ac");
 
-	if ((dotg->charger->chg_type == DWC3_DCP_CHARGER || dotg->charger->chg_type == DWC3_PROPRIETARY_CHARGER) && ac_psy) {
+	if (dotg->charger->chg_type == DWC3_DCP_CHARGER && ac_psy) {
 		pr_info("%s: override dotg->psy to ac->psy\n", __func__);
 		saved_usb_psy = dotg->psy;
 		dotg->psy = ac_psy;
@@ -751,8 +750,7 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 					break;
 				case DWC3_SDP_CHARGER:
 					dwc3_otg_set_power(phy,
-							force_fast_charge ? 
-							DWC3_IDEV_CHG_MAX : DWC3_IDEV_CHG_MIN);
+							DWC3_IDEV_CHG_MIN);
 					if (!slimport_is_connected()) {
 						dwc3_otg_start_peripheral(
 								&dotg->otg,
